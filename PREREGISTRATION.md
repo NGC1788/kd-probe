@@ -54,4 +54,4 @@ The GPU is shared with another job. Throughput measured here is for **budgeting 
 - After results exist, epochs, seeds, masking ratio and thresholds are not changed.
 
 ## Deviation log
-(none)
+- 2026-09-26 (before any stage-1 run): the server (kebap, RTX A5000) will be reset on 2026-09-28. Stage 1 starts **after** the reset. Stage 0 (setup, data, bench, smoke, initial residual) is repeated there with `runs/bootstrap.sh`, same code, torch 2.7.0+cu126 pinned. EPOCHS stays 100. The 1.3x rule uses the post-reset `out/bench.json`, i.e. the same environment as the runs. The pre-reset bench (full-teacher 450 img/s) is archived outside this repo. This changes when things run, not the design.

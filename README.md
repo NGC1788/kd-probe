@@ -22,7 +22,16 @@ MaskedKD has no license file, so its code is **not** redistributed here. `setup.
 - On one GPU the train sampler never calls `set_epoch`.
 - The probe also needs the 100-class teacher logits and the `--ce-off` switch.
 
-## Usage (single GPU)
+## Fresh server (one command)
+```bash
+mkdir -p ~/kdprobe && git clone https://github.com/NGC1788/kd-probe ~/kdprobe/code
+bash ~/kdprobe/code/runs/bootstrap.sh 2>&1 | tee ~/kdprobe/bootstrap.log
+# then, when the GPU is free:
+cd ~/kdprobe/code && source ~/kdprobe/.venv/bin/activate
+WAIT_PATTERN=<co-user job pattern> nohup bash runs/all.sh > all.out 2>&1 &
+```
+
+## Usage (single GPU, step by step)
 ```bash
 mkdir -p ~/kdprobe && cd ~/kdprobe
 uv venv --python ~/miniforge3/bin/python3 --system-site-packages .venv && source .venv/bin/activate
