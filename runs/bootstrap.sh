@@ -43,6 +43,7 @@ fi
 
 echo "== 4. stage 0"
 mkdir -p out
+python -m probe.loadercheck --data-path "$DATA" 2>&1 | grep -v -i -E "warn|register_model" | tee out/loadercheck.txt
 python -m probe.bench --out out/bench.json 2>&1 | grep -v -i -E "warn|register_model"
 bash runs/smoke.sh > out/smoke.log 2>&1 && tail -6 out/smoke.log && rm -f out/smoke/*/checkpoint.pth
 python -m probe.residual --data-path "$DATA" --out out/residual_init.json 2>&1 | grep -v -i -E "warn|register_model" | tail -5

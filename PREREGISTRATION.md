@@ -17,7 +17,7 @@ MaskedKD's DINO experiment (Table 4) is label-free but uses an EMA teacher, so i
 | Loss, CE on | `0.5 * CE_ls(y) + 0.5 * KL(p_teacher || p_student)`, T = 1 (MaskedKD default, alpha = 0.5) |
 | Loss, CE off | `0.5 * KL(p_teacher || p_student)`. The CE term is dropped; the KD weight and the LR are unchanged. This is a known limitation: the total loss scale changes |
 | Masking | Student last-layer CLS attention, top-k. **Primary: keep 98 of 196 tokens (~50% teacher cost)** |
-| Recipe | MaskedKD/DeiT defaults (AdamW, lr 5e-4 x 128/512, mixup 0.8, cutmix 1.0, label smoothing 0.1, drop-path 0.1), batch 128, `--no-repeated-aug`. The sampler advances its epoch on a single GPU and is seeded by the run seed |
+| Recipe | MaskedKD/DeiT defaults (AdamW, lr 5e-4 x 128/512, mixup 0.8, cutmix 1.0, label smoothing 0.1, drop-path 0.1), batch 128, `--no-repeated-aug`. Data-loader workers are set once from `probe.loadercheck` before stage 1 (speed only). The sampler advances its epoch on a single GPU and is seeded by the run seed |
 | Epochs | **100** for every run (fixed 2026-09-26 from `probe/bench.py`, before stage 1: ~83 GPU-h for the 12 primary runs on an idle A5000) |
 | Seeds | 0, 1, 2. Runs are paired by seed across arms: same init, same data order |
 | Metric | **Last-epoch** top-1 on the 5,000 val images, not the best epoch. Teacher agreement and ECE may be logged but are not used in any decision |

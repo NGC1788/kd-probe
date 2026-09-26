@@ -11,6 +11,7 @@ DATA=${DATA:-$HOME/kdprobe/data/in100}
 ROOT=${ROOT:-out/p1}
 ARMS=${ARMS:-"full mask50"}
 MIN_FREE_MB=${MIN_FREE_MB:-14000}
+NUM_WORKERS=${NUM_WORKERS:-8}   # speed only; set from probe.loadercheck before stage 1
 # Shared GPU: do not start a run while a process matching WAIT_PATTERN is alive
 # (e.g. WAIT_PATTERN=aim-lab-test-2). A run already started is not interrupted.
 WAIT_PATTERN=${WAIT_PATTERN:-}
@@ -44,7 +45,7 @@ for s in 0 1 2; do for ce in 1 0; do for arm in $ARMS; do
   python -m probe.launch --model deit_small_patch16_224 --teacher_model deit3_base \
     --data-set IN100 --data-path "$DATA" --epochs "$EPOCHS" --batch-size 128 \
     --distillation-type soft --distillation-alpha 0.5 --distillation-tau 1.0 \
-    --no-repeated-aug --num_workers 8 --seed "$s" --output_dir "$dir" $extra > "$dir.log" 2>&1
+    --no-repeated-aug --num_workers "$NUM_WORKERS" --seed "$s" --output_dir "$dir" $extra > "$dir.log" 2>&1
   echo "$(date +%F_%T) end $dir (exit $?)"
 done; done; done
 python -m probe.collect --root "$ROOT" --epochs "$EPOCHS"
